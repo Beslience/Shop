@@ -6,8 +6,8 @@
  * Time: 16:19
  */
 
-define("DB_HOST","119.23.33.178");
+define("DB_HOST","localhost");
 define("DB_USER","root");
-define("DB_PWD","q877804730");
+define("DB_PWD","");
 define("DB_DBNAME","shopImooc");
 define("DB_CHARSET","utf-8");
