@@ -1,15 +1,16 @@
-������Ʒ	�ϴ��ļ�	��һ���ļ������ϴ�ʧ��
+添加商品	上传文件	第一个文件总是上传失败
 
 
-����
-������Ʒ
+测试
+添加商品
 http://localhost/shopImooc/admin/
-��¼ �˺�admin ����admin
+登录 账号admin 密码admin
 
-��һ�����Ե�ַ
+另一个测试地址
 http://localhost/shopImooc/test/upload2.php
-���õ�¼
+不用登录
 
-������ͬһ������������һ��ȴʧ�ܡ�
+都调用同一个方法，而第一个却失败。
 
+有大佬帮我看看嘛？
 	
