@@ -5,13 +5,16 @@
  * Date: 2018/7/17
  * Time: 14:47
  */
-require_once '../lib/string.func.php';
+//require_once '../lib/string.func.php';
 /**
  * 构建上传文件信息
  * @return array
  */
 function buildInfo(){
     $i=0;
+    if (!$_FILES){
+        return ;
+    }
     foreach($_FILES as $v){
         //单文件
         if(is_string($v['name'])){
@@ -40,13 +43,15 @@ function uploadFile($path="uploads",$allowExt=array("gif","jpeg","png","jpg","wb
     }
     $i=0;
     $files=buildInfo();
+    if (!($files && is_array($files))){
+        return ;
+    }
     foreach($files as $file){
-        var_dump($file);
         if($file['error']===UPLOAD_ERR_OK){
             $ext=getExt($file['name']);
             //检测文件的扩展名
             if(!in_array($ext,$allowExt)){
-                exit("非法文件类型");
+                exit("非法    文件类型");
             }
             //校验是否是一个真正的图片类型
             if($imgFlag){
@@ -65,11 +70,6 @@ function uploadFile($path="uploads",$allowExt=array("gif","jpeg","png","jpg","wb
             $destination=$path."/".$filename;
             if(move_uploaded_file($file['tmp_name'],$destination)){
                 // 文件上传成功
-                echo file_exists($file['tmp_name'])? $file['tmp_name']."存在": $file['tmp_name']."不存在";
-                echo "<br />";
-                echo file_exists($destination)? $destination."存在": $destination."不存在";
-                echo "<br />";
-                print_r("move_uploaded_file执行成功");
                 $file['name']=$filename;
                 unset($file['error'],$file['tmp_name'],$file['size'],$file['type']);
                 $uploadedFiles[$i]=$file;
@@ -102,5 +102,6 @@ function uploadFile($path="uploads",$allowExt=array("gif","jpeg","png","jpg","wb
             echo $mes;
         }
     }
+
     return $uploadedFiles;
 }

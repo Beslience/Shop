@@ -6,7 +6,7 @@
  * Time: 16:19
  */
 
-define("DB_HOST","localhost");
+define("DB_HOST","");
 define("DB_USER","root");
 define("DB_PWD","");
 define("DB_DBNAME","shopImooc");

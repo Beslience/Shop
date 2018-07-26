@@ -68,7 +68,7 @@ function verifyImage($type = 1,$length = 4,$pixel = 0,$line = 0,$sess_name = "ve
  * @param bool $isReservedSource
  * @return bool
  */
-function thumb($fileName,$destination=null,$scale=0.5,$dst_w=null,$dst_h=null,$isReservedSource=false){
+function thumb($fileName,$destination=null,$scale=0.5,$dst_w=null,$dst_h=null,$isReservedSource=true){
     list($src_w,$src_h,$imagetype)=getimagesize($fileName);
     if (is_null($dst_w) || is_null($dst_h)){
         $dst_w = ceil($src_w * $scale);
@@ -79,9 +79,7 @@ function thumb($fileName,$destination=null,$scale=0.5,$dst_w=null,$dst_h=null,$i
     $outFun = str_replace("/",null,$mime);
     $src_image = $createFun($fileName);
     $dst_image = imagecreatetruecolor($dst_w,$dst_h);
-    imagecopyresampled($dst_image,$dst_image,0,0,0,0,$dst_w,$dst_h,$src_w,$src_h);
-    var_dump($destination);
-    var_dump(dirname($destination));
+    imagecopyresampled($dst_image,$src_image,0,0,0,0,$dst_w,$dst_h,$src_w,$src_h);
     if($destination&&!file_exists(dirname($destination))){
         mkdir(dirname($destination),0777,true);
     }

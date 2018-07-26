@@ -89,6 +89,9 @@ function fetchOne($link,$sql,$result_type=MYSQLI_ASSOC){
  */
 function fetchAll($link,$sql,$result_type=MYSQLI_ASSOC){
     $result =  mysqli_query($link,$sql);
+    if (!$result)
+        return ;
+    $rows = '';
     while ($row = mysqli_fetch_array($result,$result_type)){
         $rows[] = $row;
     }

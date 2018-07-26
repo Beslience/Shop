@@ -1,21 +1,21 @@
 <?php 
 require_once '../include.php';
 checkLogined();
-$order=$_REQUEST['order']?$_REQUEST['order']:null;
+$order=@$_REQUEST['order']?$_REQUEST['order']:null;
 $orderBy=$order?"order by p.".$order:null;
-$keywords=$_REQUEST['keywords']?$_REQUEST['keywords']:null;
+$keywords=@$_REQUEST['keywords']?$_REQUEST['keywords']:null;
 $where=$keywords?"where p.pName like '%{$keywords}%'":null;
 //得到数据库中所有商品
 $sql="select p.id,p.pName,p.pSn,p.pNum,p.mPrice,p.iPrice,p.pDesc,p.pubTime,p.isShow,p.isHot,c.cName from imooc_pro as p join imooc_cate c on p.cId=c.id {$where}  ";
-$totalRows=getResultNum($sql);
+$totalRows=getResultNum($link,$sql);
 $pageSize=2;
 $totalPage=ceil($totalRows/$pageSize);
-$page=$_REQUEST['page']?(int)$_REQUEST['page']:1;
+$page=@$_REQUEST['page']?(int)$_REQUEST['page']:1;
 if($page<1||$page==null||!is_numeric($page))$page=1;
 if($page>$totalPage)$page=$totalPage;
 $offset=($page-1)*$pageSize;
 $sql="select p.id,p.pName,p.pSn,p.pNum,p.mPrice,p.iPrice,p.pDesc,p.pubTime,p.isShow,p.isHot,c.cName from imooc_pro as p join imooc_cate c on p.cId=c.id {$where} {$orderBy} limit {$offset},{$pageSize}";
-$rows=fetchAll($sql);
+$rows=fetchAll($link,$sql);
 ?>
 <!doctype html>
 <html>
@@ -79,7 +79,8 @@ $rows=fetchAll($sql);
                             </tr>
                         </thead>
                         <tbody>
-                        <?php foreach($rows as $row):?>
+                            <?php if ($rows && is_array($rows)):?>
+                            <?php foreach($rows as $row):?>
                             <tr>
                                 <!--这里的id和for里面的c1 需要循环出来-->
                                 <td><input type="checkbox" id="c<?php echo $row['id'];?>" class="check" value=<?php echo $row['id'];?>><label for="c1" class="label"><?php echo $row['id'];?></label></td>
@@ -91,7 +92,9 @@ $rows=fetchAll($sql);
                                  <td><?php echo date("Y-m-d H:i:s",$row['pubTime']);?></td>
                                   <td><?php echo $row['iPrice'];?>元</td>
                                 <td align="center">
-                                				<input type="button" value="详情" class="btn" onclick="showDetail(<?php echo $row['id'];?>,'<?php echo $row['pName'];?>')"><input type="button" value="修改" class="btn" onclick="editPro(<?php echo $row['id'];?>)"><input type="button" value="删除" class="btn"onclick="delPro(<?php echo $row['id'];?>)">
+                                				<input type="button" value="详情" class="btn" onclick="showDetail(<?php echo $row['id'];?>,'<?php echo $row['pName'];?>')" />
+                                                <input type="button" value="修改" class="btn" onclick="editPro(<?php echo $row['id'];?>)" />
+                                                <input type="button" value="删除" class="btn" onclick="delPro(<?php echo $row['id'];?>)" />
 					                            <div id="showDetail<?php echo $row['id'];?>" style="display:none;">
 					                        	<table class="table" cellspacing="0" cellpadding="0">
 					                        		<tr>
@@ -122,7 +125,7 @@ $rows=fetchAll($sql);
 					                        			<td width="20%"  align="right">商品图片</td>
 					                        			<td>
 					                        			<?php 
-					                        			$proImgs=getAllImgByProId($row['id']);
+					                        			$proImgs=getAllImgByProId($link,$row['id']);
 					                        			foreach($proImgs as $img):
 					                        			?>
 					                        			<img width="100" height="100" src="uploads/<?php echo $img['albumPath'];?>" alt=""/> &nbsp;&nbsp;
@@ -151,10 +154,12 @@ $rows=fetchAll($sql);
                                 </td>
                             </tr>
                            <?php  endforeach;?>
+
                            <?php if($totalRows>$pageSize):?>
                             <tr>
                             	<td colspan="7"><?php echo showPage($page, $totalPage,"keywords={$keywords}&order={$order}");?></td>
                             </tr>
+                            <?php endif;?>
                             <?php endif;?>
                         </tbody>
                     </table>

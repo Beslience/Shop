@@ -1,7 +1,7 @@
 <?php 
-/*require_once 'include.php';
-$cates=getAllcate();
-if(!($cates && is_array($cates))){
+require_once 'include.php';
+$cates=getAllcate($link);
+/*if(!($cates && is_array($cates))){
 	alertMes("不好意思，网站维护中!!!", "http://www.imooc.com");
 }*/
 
@@ -27,12 +27,12 @@ if(!($cates && is_array($cates))){
 			</div>
 			<div class="rightArea">
 				欢迎来到慕课网！
-				<?php /*if($_SESSION['loginFlag']):*/?><!--
-				<span>欢迎您</span><?php /*echo $_SESSION['username'];*/?>
+				<?php if(@$_SESSION['loginFlag']):?>
+				<span>欢迎您</span><?php echo $_SESSION['username'];?>
 				<a href="doAction.php?act=userOut">[退出]</a>
-				<?php /*else:*/?>
+				<?php else:?>
 
-				--><?php /*endif;*/?>
+				<?php endif;?>
                 <a href="login.php">[登录]</a><a href="reg.php">[免费注册]</a>
 			</div>
 		</div>
@@ -71,7 +71,7 @@ if(!($cates && is_array($cates))){
 					</dl>
 					<dl class="shopClass_item">
 						<dt><a href="#" class="b">手机</a> <a href="#" class="b">数码</a> <a href="#" class="aLink">合约机</a></dt>
-						<dd><a href="#">荣耀3X</a> <a href="#">单反</a> <a href="#">智能设备</a></dd>
+						<dd><a href="#">荣耀3X</a> <a href="#getSmallProsByCid">单反</a> <a href="#">智能设备</a></dd>
 					</dl>
 					<dl class="shopClass_item">
 						<dt><a href="#" class="b">手机</a> <a href="#" class="b">数码</a> <a href="#" class="aLink">合约机</a></dt>
@@ -158,10 +158,10 @@ if(!($cates && is_array($cates))){
 	<div class="rightArea">
 		<div class="shopList_top clearfix">
 		<?php 
-			$pros=getProsByCid($cate['id']);
+			$pros=getProsByCid($link,$cate['id']);
 			if($pros &&is_array($pros)):
 			foreach($pros as $pro):
-			$proImg=getProImgById($pro['id']);
+			$proImg=getProImgById($link,$pro['id']);
 		?>
 			<div class="shop_item">
 				<div class="shop_img">
@@ -178,10 +178,10 @@ if(!($cates && is_array($cates))){
 		</div>
 		<div class="shopList_sm clearfix">
 		<?php 
-			$prosSmall=getSmallProsByCid($cate['id']);
+			$prosSmall=getSmallProsByCid($link,$cate['id']);
 			if($prosSmall &&is_array($prosSmall)):
 			foreach($prosSmall as $proSmall):
-			$proSmallImg=getProImgById($proSmall['id']);
+			$proSmallImg=getProImgById($link,$proSmall['id']);
 		?>
 			<div class="shopItem_sm">
 				<div class="shopItem_smImg">

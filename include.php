@@ -49,4 +49,4 @@ require_once 'album.inc.php';
 require_once 'upload.func.php';
 /*require_once 'user.inc.php';*/
 $link = connect();
-//$link->set_charset("utf8");
+$link->set_charset("utf8");

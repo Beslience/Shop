@@ -26,6 +26,10 @@ if ($act == 'logout'){
     $mes = delCate($link,$id);
 }elseif($act == 'addPro'){
     $mes = addPro($link);
+}elseif($act == 'editPro'){
+    $mes = editPro($link,$id);
+}elseif($act == 'delPro'){
+    $mes = delPro($link,$id);
 }elseif($act == 'addUser'){
     $mes = addUser($link);
 }elseif($act == 'delUser'){

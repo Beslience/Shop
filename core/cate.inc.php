@@ -55,12 +55,17 @@ function editCate($link,$id){
  * @return string
  */
 function delCate($link,$id){
-    if (delete($link,"imooc_cate","id = {$id}")){
-        $mes = "分类删除成功!<br/><a href='listCate.php'>查看分类列表</a>";
+    $res = checkProExist($link,$id);
+    if (!$res){
+        if (delete($link,"imooc_cate","id = {$id}")){
+            $mes = "分类删除成功!<br/><a href='listCate.php'>查看分类列表</a>";
+        }else{
+            $mes = "分类删除失败!<br/><a href='addCate.php'>重新删除</a>";
+        }
+        return $mes;
     }else{
-        $mes = "分类删除失败!<br/><a href='addCate.php'>重新删除</a>";
+        alertMes("不能删除分类，请先删除分类下的商品","listPro.php");
     }
-    return $mes;
 }
 
 /**
@@ -70,6 +75,12 @@ function delCate($link,$id){
  */
 function getAllCate($link){
     $sql = "select id,cName from imooc_cate";
+    $rows = fetchAll($link,$sql);
+    return $rows;
+}
+
+function checkProExist($link,$id){
+    $sql = "select * from imooc_pro where cId = {$id}";
     $rows = fetchAll($link,$sql);
     return $rows;
 }
